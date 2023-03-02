@@ -1,0 +1,9 @@
+#ifndef PROJECT_NAME_H
+#define PROJECT_NAME_H
+
+#include <raylib.h>
+
+// Macros
+#define MIN(a, b) ((a)<(b)? (a) : (b))
+
+#endif

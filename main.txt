@@ -1,0 +1,78 @@
+#include "PROJECT_NAME.h"
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define FPS 60
+
+// function prototypes
+static void start(void);   // Game variables/resources are initialized here
+static void update(void);  // Game Logic
+static void render(void);  // Drawing/Rendering the game
+static void cleanup(void); // Cleanup, free allocated memory, close window, etc
+
+static RenderTexture2D screenTexture;
+
+
+int main(void)
+{
+
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "PROJECT_NAME");
+    SetExitKey(KEY_NULL);
+    InitAudioDevice();
+    SetTargetFPS(FPS);
+
+    start();
+    // main game loop
+    while (!WindowShouldClose()) {
+        update();
+        render();
+    }
+
+    cleanup();
+    return 0;
+}
+
+
+void start(void)
+{
+    screenTexture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+
+void update(void)
+{
+
+}
+
+
+void render(void)
+{
+    BeginTextureMode(screenTexture);
+    ClearBackground(BLACK);
+    EndTextureMode();
+
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    float scale = MIN((float)GetScreenWidth()/SCREEN_WIDTH, (float)GetScreenHeight()/SCREEN_HEIGHT);
+    float centerWidth = (GetScreenWidth() - ((float)SCREEN_WIDTH*scale))*0.5f;
+    float centerHeight = (GetScreenHeight() - ((float)SCREEN_HEIGHT*scale))*0.5f;
+    float drawWidth = (float)SCREEN_WIDTH*scale;
+    float drawHeight = (float)SCREEN_HEIGHT*scale;
+
+
+    DrawTexturePro(
+            screenTexture.texture,
+            (Rectangle){0, 0, screenTexture.texture.width, -screenTexture.texture.height},
+            (Rectangle){centerWidth, centerHeight, drawWidth, drawHeight},
+            (Vector2){0,0}, 0, WHITE
+    );
+    EndDrawing();
+}
+
+
+void cleanup(void)
+{
+    UnloadRenderTexture(screenTexture);
+}
